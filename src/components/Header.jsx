@@ -5,7 +5,7 @@ import Logo from '../assets/images/logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
-  console.log(navigate);
+
   const location = useLocation();
 
   function pathMatchRoute(route) {
