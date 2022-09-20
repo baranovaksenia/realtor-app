@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import SignInImg from '../assets/images/signIn.jpg';
 import { BiShow, BiHide } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,7 +12,10 @@ const SignIn = () => {
     email: '',
     password: '',
   });
+
   const { email, password } = formData;
+
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -18,6 +23,23 @@ const SignIn = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        navigate('/');
+      }
+    } catch (error) {
+      toast.error('Bad user credentials');
+    }
+  }
 
   return (
     <section>
@@ -31,7 +53,7 @@ const SignIn = () => {
           />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
+          <form onSubmit={onSubmit}>
             <div className='mb-6'>
               <input
                 onChange={onChange}
@@ -94,8 +116,8 @@ const SignIn = () => {
             <div className='flex items-center  my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
               <p className='text-center font-semibold mx-4'>OR</p>
             </div>
+            <OAuth />
           </form>
-          <OAuth />
         </div>
       </div>
     </section>
