@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SignInImg from '../assets/images/signIn.jpg';
-import { BiShow, BiHide } from 'react-icons/bi';
+import OAuth from '../components/OAuth';
+import { db } from '../firebase.js';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   getAuth,
@@ -8,13 +8,10 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-
-import { db } from '../firebase.js';
-
 import { toast } from 'react-toastify';
 
-// import components
-import OAuth from '../components/OAuth';
+import SignInImg from '../assets/images/signIn.jpg';
+import { BiShow, BiHide } from 'react-icons/bi';
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,12 +50,14 @@ const SignUp = () => {
       const formDataCopy = {
         ...formData,
       };
+      // remove password (don't save it in firebase)
       delete formDataCopy.password;
+      // add tipestamp property
       formDataCopy.timestamp = serverTimestamp();
 
       // save data inside users collection
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
-      toast.success('Sign up was successful');
+      // toast.success('Sign up was successful');
       navigate('/');
     } catch (error) {
       toast.error('Something went wrong with the registration');
