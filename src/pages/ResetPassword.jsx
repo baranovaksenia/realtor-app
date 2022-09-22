@@ -6,9 +6,12 @@ import OAuth from '../components/OAuth';
 import { toast } from 'react-toastify';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
+
   const navigate = useNavigate();
+
   const onChange = (e) => {
     setEmail(e.target.value);
   };
