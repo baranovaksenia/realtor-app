@@ -7,6 +7,7 @@ const useAuthStatus = () => {
 
   useEffect(() => {
     const auth = getAuth();
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setLoggedIn(true);
