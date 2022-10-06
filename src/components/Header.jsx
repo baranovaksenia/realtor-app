@@ -1,11 +1,28 @@
-import React from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Logo from '../assets/images/logo.png';
 
 const Header = () => {
-  const navigate = useNavigate();
+  // if person not authenticated show "Sign In", otherwise "Profile"
+  const [pageState, setPageState] = useState('Sign in');
 
+  const auth = getAuth();
+
+  // check if the user is authenticated
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageState('Profile');
+      } else {
+        setPageState('Sign in');
+      }
+    });
+  }, [auth]);
+
+  const navigate = useNavigate();
   const location = useLocation();
 
   // function that responses for active link class
@@ -47,11 +64,12 @@ const Header = () => {
 
           <li
             className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-              pathMatchRoute('/sign-in') && 'text-black border-b-red-500'
+              (pathMatchRoute('/sign-in') || pathMatchRoute('/profile')) &&
+              'text-black border-b-red-500'
             }`}
-            onClick={() => navigate('/sign-in')}
+            onClick={() => navigate('/profile')}
           >
-            Sign In
+            {pageState}
           </li>
         </ul>
       </header>
