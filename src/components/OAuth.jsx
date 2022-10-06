@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 const OAuth = () => {
   const navigate = useNavigate();
+
+  // sing-in / sign up with google account
   async function onGoogleClick() {
     try {
       const auth = getAuth();
@@ -15,7 +17,7 @@ const OAuth = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // check for the user
+      // check for the user in db
       const docRef = doc(db, 'users', user.uid);
 
       const docSnap = await getDoc(docRef);

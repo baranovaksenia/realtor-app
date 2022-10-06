@@ -12,6 +12,7 @@ const Profile = () => {
 
   const [changeDetail, setChangeDetail] = useState(false);
 
+  // data from firestore
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
@@ -20,18 +21,24 @@ const Profile = () => {
   // destructuring
   const { name, email } = formData;
 
-  // logout
+  // logout functionality
   const onLogout = () => {
     auth.signOut();
     navigate('/');
   };
 
+  // add new data in the state
   const onChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
+  // add changes to the database
   const onSubmit = async () => {
     try {
+      // checking if the name has changed
       if (auth.currentUser.displayName !== name) {
         // update display name in firebase auth
         await updateProfile(auth.currentUser, {
@@ -45,7 +52,7 @@ const Profile = () => {
       }
       toast.success('Profile details updated');
     } catch (error) {
-      toast.error('Could nots update profile detail');
+      toast.error('Could not update profile details');
     }
   };
   return (
@@ -57,7 +64,7 @@ const Profile = () => {
           <input
             disabled={!changeDetail}
             onChange={onChange}
-            className={`w-full  xp-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded
+            className={`w-full  px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded
             transition ease-in-out
             ${changeDetail && 'bg-red-200 focus:bg-red-200'}`}
             type='text'

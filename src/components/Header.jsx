@@ -8,6 +8,7 @@ const Header = () => {
 
   const location = useLocation();
 
+  // function that responses for active link class
   function pathMatchRoute(route) {
     if (route === location.pathname) {
       return true;

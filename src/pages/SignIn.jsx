@@ -13,10 +13,12 @@ const SignIn = () => {
     password: '',
   });
 
+  // destructuring
   const { email, password } = formData;
 
   const navigate = useNavigate();
 
+  // save in state user's information
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -33,6 +35,7 @@ const SignIn = () => {
         email,
         password
       );
+      // if user credentials are in firebase store navigate to the home page
       if (userCredential.user) {
         navigate('/');
       }

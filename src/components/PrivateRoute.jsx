@@ -6,6 +6,7 @@ const PrivateRoute = () => {
   // import from custom hook
   const { loggedIn, checkingStatus } = useAuthStatus();
 
+  // if run checking process
   if (checkingStatus) {
     return <h3>Loading...</h3>;
   }
