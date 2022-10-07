@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { FcHome } from 'react-icons/fc';
 import { getAuth, updateProfile } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from './../firebase';
@@ -40,11 +41,11 @@ const Profile = () => {
     try {
       // checking if the name has changed
       if (auth.currentUser.displayName !== name) {
-        // update display name in firebase auth
+        // update display name in firebase auth (use updateProfile function from firebase) - return a promise
         await updateProfile(auth.currentUser, {
           displayName: name,
         });
-        // update name in firestore
+        // update name in the firestore
         const docRef = doc(db, 'users', auth.currentUser.uid);
         await updateDoc(docRef, {
           name: name,
@@ -55,11 +56,12 @@ const Profile = () => {
       toast.error('Could not update profile details');
     }
   };
+
   return (
     <section className='max-w-6xl mx-auto flex items-center justify-center flex-col'>
       <h1 className='text-3xl text-center mt-6 font-bold'>My Profile</h1>
       <div className='w-full md:w-[50%] mt-6 px-3'>
-        <form>
+        <form className='mb-6'>
           {/* name input */}
           <input
             disabled={!changeDetail}
@@ -103,6 +105,18 @@ const Profile = () => {
             </p>
           </div>
         </form>
+        <button
+          type='submit'
+          className='w-full bg-blue-600 text-white uppercase px-6 py-2 text-sm font-medium rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800'
+        >
+          <Link
+            to='/create-listing'
+            className='flex justify-center items-center'
+          >
+            <FcHome className='mr-2 text-3xl bg-red-200 rounded-full p-1 border-2' />
+            Sell or rent your home
+          </Link>
+        </button>
       </div>
     </section>
   );

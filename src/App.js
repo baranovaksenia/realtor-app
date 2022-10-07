@@ -1,8 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
-import { Home, Offers, SignIn, SignUp, Profile, ResetPassword } from './pages';
+import {
+  Home,
+  Offers,
+  SignIn,
+  SignUp,
+  Profile,
+  ResetPassword,
+  CreateListing,
+} from './pages';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -40,6 +48,10 @@ function App() {
         <Route
           path='/sign-up'
           element={<SignUp />}
+        />
+        <Route
+          path='/create-listing'
+          element={<CreateListing />}
         />
       </Routes>
       <ToastContainer
